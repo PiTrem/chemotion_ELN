@@ -25,6 +25,10 @@ import ResearchPlanDetailsContainers from 'src/apps/mydb/elements/details/resear
 import ElementDetailSortTab from 'src/apps/mydb/elements/details/ElementDetailSortTab';
 import { addSegmentTabs } from 'src/components/generic/SegmentDetails';
 import PrivateNoteElement from 'src/apps/mydb/elements/details/PrivateNoteElement';
+import HeaderCommentSection from 'src/components/comments/HeaderCommentSection';
+import CommentSection from 'src/components/comments/CommentSection';
+import CommentActions from 'src/stores/alt/actions/CommentActions';
+import CommentModal from 'src/components/common/CommentModal';
 
 export default class ResearchPlanDetails extends Component {
   constructor(props) {
@@ -44,6 +48,11 @@ export default class ResearchPlanDetails extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onTabPositionChanged = this.onTabPositionChanged.bind(this);
     this.handleSegmentsChange = this.handleSegmentsChange.bind(this);
+  }
+
+  componentDidMount() {
+    const { researchPlan } = this.props;
+    CommentActions.fetchComments(researchPlan);
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -470,6 +479,7 @@ export default class ResearchPlanDetails extends Component {
             <i className="fa fa-expand" aria-hidden="true" />
           </Button>
         </OverlayTrigger>
+        <HeaderCommentSection element={researchPlan} />
       </Panel.Heading>
     );
   }
@@ -485,6 +495,9 @@ export default class ResearchPlanDetails extends Component {
     const tabContentsMap = {
       research_plan: (
         <Tab eventKey="research_plan" title="Research plan" key={`rp_${researchPlan.id}`}>
+          {
+            !researchPlan.isNew && <CommentSection section="research_plan_research_plan" />
+          }
           <div style={{ margin: '5px 0px 5px 5px' }}>
             {btnMode}
           </div>
@@ -494,16 +507,25 @@ export default class ResearchPlanDetails extends Component {
       ),
       analyses: (
         <Tab eventKey="analyses" title="Analyses" key={`analyses_${researchPlan.id}`}>
+          {
+            !researchPlan.isNew && <CommentSection section="research_plan_analyses" />
+          }
           {this.renderAnalysesTab(researchPlan)}
         </Tab>
       ),
       attachments: (
         <Tab eventKey="attachments" title="Attachments" key={`attachments_${researchPlan.id}`}>
+          {
+            !researchPlan.isNew && <CommentSection section="research_plan_attachments" />
+          }
           {this.renderAttachmentsTab(researchPlan)}
         </Tab>
       ),
       references: (
         <Tab eventKey="references" title="References" key={`lit_${researchPlan.id}`}>
+          {
+            !researchPlan.isNew && <CommentSection section="research_plan_references" />
+          }
           <ResearchPlansLiteratures element={researchPlan} />
         </Tab>
       ),
@@ -520,6 +542,9 @@ export default class ResearchPlanDetails extends Component {
       ),
       metadata: (
         <Tab eventKey={4} title="Metadata" disabled={researchPlan.isNew} key={`metadata_${researchPlan.id}`}>
+          {
+            !researchPlan.isNew && <CommentSection section="research_plan_metadata" />
+          }
           <ResearchPlanMetadata
             parentResearchPlan={researchPlan}
             parentResearchPlanMetadata={researchPlan.research_plan_metadata}
@@ -565,6 +590,7 @@ export default class ResearchPlanDetails extends Component {
               researchPlan.changed ? <Button bsStyle="warning" onClick={() => this.handleSubmit()}>{researchPlan.isNew ? 'Create' : 'Save'}</Button> : <div />
             }
           </ButtonToolbar>
+          <CommentModal element={researchPlan} />
         </Panel.Body>
       </Panel>
     );

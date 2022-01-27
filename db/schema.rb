@@ -193,6 +193,22 @@ ActiveRecord::Schema.define(version: 2023_05_03_090936) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.string "content"
+    t.integer "created_by", null: false
+    t.string "section"
+    t.integer "commentable_id"
+    t.string "commentable_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "status", default: "Pending"
+    t.string "submitter"
+    t.string "resolver_name"
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
+    t.index ["created_by"], name: "index_comments_on_user"
+    t.index ["section"], name: "index_comments_on_section"
+  end
+
   create_table "computed_props", id: :serial, force: :cascade do |t|
     t.integer "molecule_id"
     t.float "max_potential", default: 0.0
@@ -1233,9 +1249,9 @@ ActiveRecord::Schema.define(version: 2023_05_03_090936) do
     t.datetime "updated_at", null: false
     t.string "additive"
     t.datetime "deleted_at"
-    t.jsonb "readouts", default: [{"unit"=>"", "value"=>""}]
     t.string "label", default: "Molecular structure", null: false
     t.string "color_code"
+    t.jsonb "readouts", default: [{"unit"=>"", "value"=>""}]
     t.index ["deleted_at"], name: "index_wells_on_deleted_at"
     t.index ["sample_id"], name: "index_wells_on_sample_id"
     t.index ["wellplate_id"], name: "index_wells_on_wellplate_id"

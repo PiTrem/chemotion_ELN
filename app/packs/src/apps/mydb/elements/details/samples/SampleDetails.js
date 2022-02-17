@@ -66,6 +66,8 @@ import ElementDetailSortTab from 'src/apps/mydb/elements/details/ElementDetailSo
 import { addSegmentTabs } from 'src/components/generic/SegmentDetails';
 import MeasurementsTab from 'src/apps/mydb/elements/details/samples/measurementsTab/MeasurementsTab';
 import { validateCas } from 'src/utilities/CasValidation';
+import CommentModal from 'src/components/comments/CommentModal';
+import CommentFetcher from 'src/components/fetchers/CommentFetcher';
 
 const MWPrecision = 6;
 
@@ -407,7 +409,7 @@ export default class SampleDetails extends React.Component {
     } else {
       svgPath = sample.svgPath;
     }
-    let className = svgPath ? 'svg-container' : 'svg-container-empty'
+    const className = svgPath ? 'svg-container' : 'svg-container-empty';
     return (
       sample.can_update
         ? <div className={className}
@@ -1284,7 +1286,7 @@ export default class SampleDetails extends React.Component {
         </Modal>
       );
     }
-    return (<div />);
+    return <div />;
   }
 
   onTabPositionChanged(visible) {
@@ -1388,9 +1390,10 @@ export default class SampleDetails extends React.Component {
           {this.sampleFooter()}
           {this.structureEditorModal(sample)}
           {this.renderMolfileModal()}
+          {this.renderCommentModal(sample)}
         </Panel.Body>
       </Panel>
-    )
+    );
   }
 }
 

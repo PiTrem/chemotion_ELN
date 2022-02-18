@@ -68,6 +68,7 @@ import MeasurementsTab from 'src/apps/mydb/elements/details/samples/measurements
 import { validateCas } from 'src/utilities/CasValidation';
 import CommentModal from 'src/components/comments/CommentModal';
 import CommentFetcher from 'src/components/fetchers/CommentFetcher';
+import CommentSection from 'src/components/comments/CommentSection';
 
 const MWPrecision = 6;
 
@@ -1047,6 +1048,12 @@ export default class SampleDetails extends React.Component {
     const { sample } = this.state;
     return (
       <Tab eventKey={ind} title="Analyses" key={'Container' + sample.id.toString()}>
+        <CommentSection
+          section="sample_analyses"
+          comments={this.state.comments}
+          toggleCommentModal={this.toggleCommentModal}
+          getSectionComments={this.getSectionComments}
+        />
         <ListGroupItem style={{ paddingBottom: 20 }}>
           <SampleDetailsContainers
             sample={sample}
@@ -1086,6 +1093,12 @@ export default class SampleDetails extends React.Component {
         title="Results"
         key={`Results${sample.id.toString()}`}
       >
+        <CommentSection
+          section="sample_results"
+          comments={this.state.comments}
+          toggleCommentModal={this.toggleCommentModal}
+          getSectionComments={this.getSectionComments}
+        />
         <ListGroupItem style={{ paddingBottom: 20 }}>
           <FormGroup controlId="importedReadoutInput">
             <ControlLabel>Imported Readout</ControlLabel>
@@ -1166,6 +1179,12 @@ export default class SampleDetails extends React.Component {
         title="QC & curation"
         key={`QC_${sample.id}_${ind}`}
       >
+        <CommentSection
+          section="sample_qc_curation"
+          comments={this.state.comments}
+          toggleCommentModal={this.toggleCommentModal}
+          getSectionComments={this.getSectionComments}
+        />
         <ListGroupItem style={{ paddingBottom: 20 }} >
           <QcMain
             sample={sample}

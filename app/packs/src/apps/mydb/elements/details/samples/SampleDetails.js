@@ -1024,6 +1024,12 @@ export default class SampleDetails extends React.Component {
 
     return (
       <Tab eventKey={ind} title="Properties" key={'Props' + sample.id.toString()}>
+        <CommentSection
+          section="sample_properties"
+          comments={this.state.comments}
+          toggleCommentModal={this.toggleCommentModal}
+          getSectionComments={this.getSectionComments}
+        />
         <ListGroupItem>
           <SampleForm
             sample={sample}
@@ -1076,6 +1082,12 @@ export default class SampleDetails extends React.Component {
         title="References"
         key={`References_${sample.id}`}
       >
+        <CommentSection
+          section="sample_literature"
+          comments={this.state.comments}
+          toggleCommentModal={this.toggleCommentModal}
+          getSectionComments={this.getSectionComments}
+        />
         <ListGroupItem style={{ paddingBottom: 20 }} >
           <SampleDetailsLiteratures
             element={sample}

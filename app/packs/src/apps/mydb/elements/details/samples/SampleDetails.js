@@ -122,6 +122,10 @@ export default class SampleDetails extends React.Component {
       visible: Immutable.List(),
       startExport: false,
       sfn: UIStore.getState().hasSfn,
+      showCommentModal: false,
+      comments: [],
+      section: '',
+      showCommentSection: false,
     };
 
     const currentUser = (UserStore.getState() && UserStore.getState().currentUser) || {};
@@ -601,6 +605,21 @@ export default class SampleDetails extends React.Component {
             Comments
           </Button>
         </OverlayTrigger>
+        <OverlayTrigger
+          placement="top"
+          overlay={<Tooltip id="toggleComments">Show/Hide Comments</Tooltip>}
+        >
+          <Button
+            bsSize="xsmall"
+            // bsStyle="primary"
+            onClick={this.toggleCommentSection}
+            style={{ marginLeft: 5 }}
+          >
+            <span>
+              <i className={this.state.showCommentSection ? 'fa fa-angle-down' : 'fa fa-angle-up'} />
+            </span>
+          </Button>
+        </OverlayTrigger>
       </div>
     );
   }
@@ -1024,12 +1043,15 @@ export default class SampleDetails extends React.Component {
 
     return (
       <Tab eventKey={ind} title="Properties" key={'Props' + sample.id.toString()}>
-        <CommentSection
-          section="sample_properties"
-          comments={this.state.comments}
-          toggleCommentModal={this.toggleCommentModal}
-          getSectionComments={this.getSectionComments}
-        />
+        {
+          this.state.showCommentSection &&
+          <CommentSection
+            section="sample_properties"
+            comments={this.state.comments}
+            toggleCommentModal={this.toggleCommentModal}
+            getSectionComments={this.getSectionComments}
+          />
+        }
         <ListGroupItem>
           <SampleForm
             sample={sample}
@@ -1053,13 +1075,16 @@ export default class SampleDetails extends React.Component {
   sampleContainerTab(ind) {
     const { sample } = this.state;
     return (
-      <Tab eventKey={ind} title="Analyses" key={'Container' + sample.id.toString()}>
-        <CommentSection
-          section="sample_analyses"
-          comments={this.state.comments}
-          toggleCommentModal={this.toggleCommentModal}
-          getSectionComments={this.getSectionComments}
-        />
+      <Tab eventKey={ind} title="Analyses" key={`Container${sample.id.toString()}`}>
+        {
+          this.state.showCommentSection &&
+          <CommentSection
+            section="sample_analyses"
+            comments={this.state.comments}
+            toggleCommentModal={this.toggleCommentModal}
+            getSectionComments={this.getSectionComments}
+          />
+        }
         <ListGroupItem style={{ paddingBottom: 20 }}>
           <SampleDetailsContainers
             sample={sample}
@@ -1082,12 +1107,15 @@ export default class SampleDetails extends React.Component {
         title="References"
         key={`References_${sample.id}`}
       >
-        <CommentSection
-          section="sample_literature"
-          comments={this.state.comments}
-          toggleCommentModal={this.toggleCommentModal}
-          getSectionComments={this.getSectionComments}
-        />
+        {
+          this.state.showCommentSection &&
+          <CommentSection
+            section="sample_literature"
+            comments={this.state.comments}
+            toggleCommentModal={this.toggleCommentModal}
+            getSectionComments={this.getSectionComments}
+          />
+        }
         <ListGroupItem style={{ paddingBottom: 20 }} >
           <SampleDetailsLiteratures
             element={sample}
@@ -1105,12 +1133,15 @@ export default class SampleDetails extends React.Component {
         title="Results"
         key={`Results${sample.id.toString()}`}
       >
-        <CommentSection
-          section="sample_results"
-          comments={this.state.comments}
-          toggleCommentModal={this.toggleCommentModal}
-          getSectionComments={this.getSectionComments}
-        />
+        {
+          this.state.showCommentSection &&
+          <CommentSection
+            section="sample_results"
+            comments={this.state.comments}
+            toggleCommentModal={this.toggleCommentModal}
+            getSectionComments={this.getSectionComments}
+          />
+        }
         <ListGroupItem style={{ paddingBottom: 20 }}>
           <FormGroup controlId="importedReadoutInput">
             <ControlLabel>Imported Readout</ControlLabel>
@@ -1191,12 +1222,15 @@ export default class SampleDetails extends React.Component {
         title="QC & curation"
         key={`QC_${sample.id}_${ind}`}
       >
-        <CommentSection
-          section="sample_qc_curation"
-          comments={this.state.comments}
-          toggleCommentModal={this.toggleCommentModal}
-          getSectionComments={this.getSectionComments}
-        />
+        {
+          this.state.showCommentSection &&
+          <CommentSection
+            section="sample_qc_curation"
+            comments={this.state.comments}
+            toggleCommentModal={this.toggleCommentModal}
+            getSectionComments={this.getSectionComments}
+          />
+        }
         <ListGroupItem style={{ paddingBottom: 20 }} >
           <QcMain
             sample={sample}
@@ -1354,6 +1388,11 @@ export default class SampleDetails extends React.Component {
       this.setCommentSection(section);
     }
   };
+
+  toggleCommentSection = () => {
+    this.setState({ showCommentSection: !this.state.showCommentSection });
+    this.setState({ isEditing: true });
+  }
 
   fetchComments = () => {
     const { sample } = this.state;

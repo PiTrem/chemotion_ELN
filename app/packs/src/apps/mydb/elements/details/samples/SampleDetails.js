@@ -69,7 +69,6 @@ import { validateCas } from 'src/utilities/CasValidation';
 import HeaderCommentSection from 'src/components/comments/HeaderCommentSection';
 import CommentModal from 'src/components/comments/CommentModal';
 import CommentSection from 'src/components/comments/CommentSection';
-import CommentFetcher from 'src/components/fetchers/CommentFetcher';
 
 const MWPrecision = 6;
 

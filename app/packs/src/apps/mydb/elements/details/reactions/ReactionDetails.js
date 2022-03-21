@@ -363,6 +363,7 @@ export default class ReactionDetails extends Component {
         </div>
         <PrintCodeButton element={reaction} />
         <HeaderCommentSection
+          element={reaction}
           headerSection="reaction_header"
           showCommentSection={showCommentSection}
           setCommentSection={this.props.setCommentSection}

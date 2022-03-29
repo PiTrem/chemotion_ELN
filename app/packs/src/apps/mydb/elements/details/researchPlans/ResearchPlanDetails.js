@@ -47,7 +47,6 @@ export default class ResearchPlanDetails extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onTabPositionChanged = this.onTabPositionChanged.bind(this);
     this.handleSegmentsChange = this.handleSegmentsChange.bind(this);
-    this.renderCommentModal = this.renderCommentModal.bind(this);
   }
 
   componentDidMount() {
@@ -92,24 +91,6 @@ export default class ResearchPlanDetails extends Component {
     researchPlan.mode = mode;
     this.setState({ researchPlan });
   }
-
-  renderCommentModal = (element) => {
-    const { showCommentModal, comments, section } = this.props;
-    if (showCommentModal) {
-      return (
-        <CommentModal
-          showCommentModal={showCommentModal}
-          element={element}
-          section={section}
-          comments={comments}
-          fetchComments={this.props.fetchComments}
-          getSectionComments={this.props.getSectionComments}
-          toggleCommentModal={this.props.toggleCommentModal}
-        />
-      );
-    }
-    return <div />;
-  };
 
   // handle functions
 
@@ -500,7 +481,6 @@ export default class ResearchPlanDetails extends Component {
         </OverlayTrigger>
         <HeaderCommentSection
           element={researchPlan}
-          headerSection="research_plan_header"
           showCommentSection={showCommentSection}
           setCommentSection={this.props.setCommentSection}
           getSectionComments={this.props.getSectionComments}
@@ -653,7 +633,7 @@ export default class ResearchPlanDetails extends Component {
             }
           </ButtonToolbar>
         </Panel.Body>
-        {this.renderCommentModal(researchPlan)}
+        {this.props.renderCommentModal(researchPlan)}
       </Panel>
     );
   }
@@ -667,6 +647,7 @@ ResearchPlanDetails.propTypes = {
   showCommentSection: PropTypes.bool.isRequired,
   showCommentModal: PropTypes.bool.isRequired,
   fetchComments: PropTypes.func.isRequired,
+  renderCommentModal: PropTypes.func.isRequired,
   getSectionComments: PropTypes.func.isRequired,
   setCommentSection: PropTypes.func.isRequired,
   toggleCommentModal: PropTypes.func.isRequired,

@@ -145,7 +145,6 @@ export default class SampleDetails extends React.Component {
     this.handleSegmentsChange = this.handleSegmentsChange.bind(this);
     this.decoupleChanged = this.decoupleChanged.bind(this);
     this.handleFastInput = this.handleFastInput.bind(this);
-    this.renderCommentModal = this.renderCommentModal.bind(this);
   }
 
   componentDidMount() {
@@ -587,7 +586,6 @@ export default class SampleDetails extends React.Component {
         <ShowUserLabels element={sample} />
         <HeaderCommentSection
           element={sample}
-          headerSection="sample_header"
           showCommentSection={showCommentSection}
           setCommentSection={this.props.setCommentSection}
           getSectionComments={this.props.getSectionComments}
@@ -1357,24 +1355,6 @@ export default class SampleDetails extends React.Component {
     this.setState({ visible });
   }
 
-  renderCommentModal = (element) => {
-    const { showCommentModal, comments, section } = this.props;
-    if (showCommentModal) {
-      return (
-        <CommentModal
-          showCommentModal={showCommentModal}
-          element={element}
-          section={section}
-          comments={comments}
-          fetchComments={this.props.fetchComments}
-          getSectionComments={this.props.getSectionComments}
-          toggleCommentModal={this.props.toggleCommentModal}
-        />
-      );
-    }
-    return <div />;
-  };
-
   render() {
     const sample = this.state.sample || {};
     const { visible } = this.state;
@@ -1472,7 +1452,7 @@ export default class SampleDetails extends React.Component {
           {this.sampleFooter()}
           {this.structureEditorModal(sample)}
           {this.renderMolfileModal()}
-          {this.renderCommentModal(sample)}
+          {this.props.renderCommentModal(sample)}
         </Panel.Body>
       </Panel>
     );
@@ -1487,6 +1467,7 @@ SampleDetails.propTypes = {
   showCommentSection: PropTypes.bool.isRequired,
   showCommentModal: PropTypes.bool.isRequired,
   fetchComments: PropTypes.func.isRequired,
+  renderCommentModal: PropTypes.func.isRequired,
   getSectionComments: PropTypes.func.isRequired,
   setCommentSection: PropTypes.func.isRequired,
   toggleCommentModal: PropTypes.func.isRequired,

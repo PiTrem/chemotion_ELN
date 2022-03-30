@@ -34,7 +34,6 @@ import Immutable from 'immutable';
 import ElementDetailSortTab from 'src/apps/mydb/elements/details/ElementDetailSortTab';
 import ScifinderSearch from 'src/components/scifinder/ScifinderSearch';
 import HeaderCommentSection from 'src/components/comments/HeaderCommentSection';
-import CommentModal from 'src/components/comments/CommentModal';
 import CommentSection from 'src/components/comments/CommentSection';
 
 export default class ReactionDetails extends Component {
@@ -412,7 +411,7 @@ export default class ReactionDetails extends Component {
       scheme: (
         <Tab eventKey="scheme" title="Scheme" key={`scheme_${reaction.id}`}>
           {
-            this.props.showCommentSection &&
+            this.props.showCommentSection && !reaction.isNew &&
             <CommentSection
               section="reaction_scheme"
               comments={this.props.comments}
@@ -431,7 +430,7 @@ export default class ReactionDetails extends Component {
       properties: (
         <Tab eventKey="properties" title="Properties" key={`properties_${reaction.id}`}>
           {
-            this.props.showCommentSection &&
+            this.props.showCommentSection && !reaction.isNew &&
             <CommentSection
               section="reaction_properties"
               comments={this.props.comments}
@@ -451,7 +450,7 @@ export default class ReactionDetails extends Component {
       references: (
         <Tab eventKey="references" title="References" key={`references_${reaction.id}`}>
           {
-            this.props.showCommentSection &&
+            this.props.showCommentSection && !reaction.isNew &&
             <CommentSection
               section="reaction_references"
               comments={this.props.comments}
@@ -470,7 +469,7 @@ export default class ReactionDetails extends Component {
       analyses: (
         <Tab eventKey="analyses" title="Analyses" key={`analyses_${reaction.id}`}>
           {
-            this.props.showCommentSection &&
+            this.props.showCommentSection && !reaction.isNew &&
             <CommentSection
               section="reaction_analyses"
               comments={this.props.comments}
@@ -485,7 +484,7 @@ export default class ReactionDetails extends Component {
       green_chemistry: (
         <Tab eventKey="green_chemistry" title="Green Chemistry" key={`green_chem_${reaction.id}`}>
           {
-            this.props.showCommentSection &&
+            this.props.showCommentSection && !reaction.isNew &&
             <CommentSection
               section="reaction_green_chemistry"
               comments={this.props.comments}

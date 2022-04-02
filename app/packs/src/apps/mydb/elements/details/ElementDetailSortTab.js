@@ -6,10 +6,13 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { Button, Overlay, Popover } from 'react-bootstrap';
 import Immutable from 'immutable';
-import _ from 'lodash';
+import _, { isEmpty } from 'lodash';
 import UserStore from 'src/stores/alt/stores/UserStore';
 import UserActions from 'src/stores/alt/actions/UserActions';
 import TabLayoutContainer from 'src/apps/mydb/elements/tabLayout/TabLayoutContainer';
+import UIStore from 'src/stores/alt/stores/UIStore';
+import CollectionActions from '../../../../stores/alt/actions/CollectionActions';
+import { getElementSegments } from '../../../../utilities/ElementUtils';
 
 const getNodeText = (node) => {
   if (['string', 'number'].includes(typeof node)) return node;
@@ -59,6 +62,19 @@ const getArrayFromLayout = (layout, availableTabs, addInventoryTab) => {
   };
 };
 
+const filterTabLayout = (layoutState) => {
+  const { visible, hidden } = layoutState;
+  const layout = {};
+
+  visible.forEach((value, index) => {
+    layout[value] = (index + 1);
+  });
+  hidden.filter(val => val !== 'hidden').forEach((value, index) => {
+    layout[value] = (-index - 1);
+  });
+  return layout;
+};
+
 export default class ElementDetailSortTab extends Component {
   constructor(props) {
     super(props);
@@ -92,9 +108,18 @@ export default class ElementDetailSortTab extends Component {
   }
 
   onChangeUser(state) {
-    const { availableTabs, addInventoryTab } = this.props;
-    const layout = (state.profile && state.profile.data && state.profile.data[`layout_detail_${this.type}`]) || {};
+    const { addInventoryTab } = this.props;
+    const currentCollection = UIStore.getState().currentCollection;
+    const tabs = currentCollection?.tabs_segment;
+    let layout = {};
+    if (tabs && tabs.hasOwnProperty(`${this.type}`) && tabs[`${this.type}`]) {
+      layout = tabs[`${this.type}`]
+    } else if(state.profile && state.profile.data && state.profile.data[`layout_detail_${this.type}`]){
+      layout = state.profile.data[`layout_detail_${this.type}`]
+    }
+    let availableTabs = getElementSegments(this.type, this.props.availableTabs);
     const { visible, hidden } = getArrayFromLayout(layout, availableTabs, addInventoryTab);
+
     this.setState(
       { visible, hidden },
       () => this.props.onTabPositionChanged(visible)
@@ -107,14 +132,12 @@ export default class ElementDetailSortTab extends Component {
   }
 
   updateLayout() {
-    const { visible, hidden } = this.tabLayoutContainerElement.state;
-    const layout = {};
-    visible.forEach((value, index) => {
-      layout[value] = (index + 1);
-    });
-    hidden.filter(val => val !== 'hidden').forEach((value, index) => {
-      layout[value] = (-index - 1);
-    });
+    const layout = filterTabLayout(this.tabLayoutContainerElement.state);
+    const currentCollection = UIStore.getState().currentCollection;
+    let tabSegment = currentCollection?.tabs_segment;
+    _.set(tabSegment, `${this.type}`, layout);
+    tabSegment = { ...tabSegment, [`${this.type}`]: layout };
+    CollectionActions.updateTabsSegment({ segment: tabSegment, cId: currentCollection.id });
 
     const userProfile = UserStore.getState().profile;
     const layoutName = `data.layout_detail_${this.type}`;
@@ -127,6 +150,9 @@ export default class ElementDetailSortTab extends Component {
   }
 
   render() {
+    const currentCollection = UIStore.getState().currentCollection;
+    const tabs = currentCollection?.tabs_segment;
+    const buttonInfo = isEmpty(tabs) ? 'info' : 'default';
     const tabLayoutContainerElement = (
       <TabLayoutContainer
         visible={this.state.visible}
@@ -142,7 +168,7 @@ export default class ElementDetailSortTab extends Component {
       <Popover
         className="collection-overlay"
         id="popover-layout"
-        style={{ maxWidth: 'none', width: `${wd}px` }}
+        style={{ maxWidth: 'none', width: `${wd}px`, position: 'sticky' }}
       >
         <div>
           <h3 className="popover-title">Tab Layout</h3>
@@ -153,17 +179,19 @@ export default class ElementDetailSortTab extends Component {
       </Popover>
     );
     return (
-      <div style={{position: 'relative'}}>
+      <div>
         <Button
-          bsStyle="info"
+          bsStyle={buttonInfo}
           bsSize="xsmall"
           className="button-right"
           ref={button => { this.tabLayoutButton = button; }}
           onClick={this.toggleTabLayoutContainer}
+          title="Tabs layout for all collections can also be managed in Collection Tabs page">
         >
           <i className="fa fa-sliders" aria-hidden="true" />
         </Button>
         <Overlay
+          style={{ overflowY: 'scroll'}}
           container={this}
           onHide={this.onCloseTabLayoutContainer}
           placement="bottom"
@@ -185,3 +213,5 @@ ElementDetailSortTab.propTypes = {
   tabTitles: PropTypes.object,
   addInventoryTab: PropTypes.bool,
 };
+
+export { getArrayFromLayout, filterTabLayout };

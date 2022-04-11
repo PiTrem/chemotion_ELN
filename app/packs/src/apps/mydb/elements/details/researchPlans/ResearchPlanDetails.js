@@ -451,7 +451,7 @@ export default class ResearchPlanDetails extends Component {
   } /* eslint-enable */
 
   renderPanelHeading(researchPlan) {
-    const { showCommentSection } = this.props;
+    const { showCommentSection, comments } = this.props;
     const titleTooltip = `Created at: ${researchPlan.created_at} \n Updated at: ${researchPlan.updated_at}`;
 
     return (
@@ -480,6 +480,7 @@ export default class ResearchPlanDetails extends Component {
         </OverlayTrigger>
         <HeaderCommentSection
           element={researchPlan}
+          comments={comments}
           showCommentSection={showCommentSection}
           setCommentSection={this.props.setCommentSection}
           getSectionComments={this.props.getSectionComments}

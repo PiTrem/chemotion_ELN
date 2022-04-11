@@ -257,7 +257,7 @@ export default class ReactionDetails extends Component {
   }
 
   reactionHeader(reaction) {
-    const { showCommentSection } = this.props;
+    const { showCommentSection, comments } = this.props;
     let hasChanged = reaction.changed ? '' : 'none';
     const titleTooltip = `Created at: ${reaction.created_at} \n Updated at: ${reaction.updated_at}`;
 
@@ -349,6 +349,7 @@ export default class ReactionDetails extends Component {
         <PrintCodeButton element={reaction} />
         <HeaderCommentSection
           element={reaction}
+          comments={comments}
           showCommentSection={showCommentSection}
           setCommentSection={this.props.setCommentSection}
           getSectionComments={this.props.getSectionComments}

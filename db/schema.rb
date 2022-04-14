@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 2023_05_03_090936) do
     t.boolean "is_synchronized", default: false, null: false
     t.integer "researchplan_detail_level", default: 10
     t.integer "element_detail_level", default: 10
+    t.jsonb "tabs_segment", default: {}
     t.index ["ancestry"], name: "index_collections_on_ancestry"
     t.index ["deleted_at"], name: "index_collections_on_deleted_at"
     t.index ["user_id"], name: "index_collections_on_user_id"

@@ -57,6 +57,18 @@ const getArrayFromLayout = (layout, availableTabs) => {
   };
 };
 
+const filterTabLayout = (layoutState) => {
+  const { visible, hidden } = layoutState;
+  const layout = {};
+
+  visible.forEach((value, index) => {
+    layout[value] = (index + 1);
+  });
+  hidden.filter(val => val !== 'hidden').forEach((value, index) => {
+    layout[value] = (-index - 1);
+  });
+  return layout;
+};
 
 export default class ElementDetailSortTab extends Component {
   constructor(props) {
@@ -108,15 +120,7 @@ export default class ElementDetailSortTab extends Component {
   }
 
   updateLayout() {
-    const { visible, hidden } = this.tabLayoutContainerElement.state;
-    const layout = {};
-
-    visible.forEach((value, index) => {
-      layout[value] = (index + 1);
-    });
-    hidden.filter(val => val !== 'hidden').forEach((value, index) => {
-      layout[value] = (-index - 1);
-    });
+    const layout = filterTabLayout(this.layout.state);
 
     const userProfile = UserStore.getState().profile;
     const layoutName = `data.layout_detail_${this.type}`;
@@ -186,3 +190,5 @@ ElementDetailSortTab.propTypes = {
   availableTabs: PropTypes.arrayOf(PropTypes.string),
   tabTitles: PropTypes.object
 };
+
+export { getArrayFromLayout, filterTabLayout };

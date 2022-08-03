@@ -105,7 +105,12 @@ export default class ElementDetailSortTab extends Component {
   onChangeUser(state) {
     const currentCollection = UIStore.getState().currentCollection;
     const tabs = currentCollection.tabs_segment;
-    const layout = tabs.hasOwnProperty(`${this.type}`) ? tabs[`${this.type}`] : ((state.profile && state.profile.data && state.profile.data[`layout_detail_${this.type}`]) || {});
+    let layout = {};
+    if (tabs && tabs.hasOwnProperty(`${this.type}`) && tabs[`${this.type}`]) {
+      layout = tabs[`${this.type}`]
+    } else if(state.profile && state.profile.data && state.profile.data[`layout_detail_${this.type}`]){
+      layout = state.profile.data[`layout_detail_${this.type}`]
+    }
     const { visible, hidden } = getArrayFromLayout(layout, this.props.availableTabs);
 
     this.setState(

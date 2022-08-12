@@ -39,6 +39,7 @@ export default class CollectionTree extends React.Component {
       syncCollectionVisible: false,
       inbox: inboxState.inbox,
       numberOfAttachments: inboxState.numberOfAttachments,
+      inboxVisible: false
     };
 
     this.onChange = this.onChange.bind(this);

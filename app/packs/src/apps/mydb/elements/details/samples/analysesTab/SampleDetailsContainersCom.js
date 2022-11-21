@@ -1,11 +1,12 @@
 import React from 'react';
 import { PanelGroup, Panel } from 'react-bootstrap';
 import ContainerComponent from 'src/components/container/ContainerComponent';
+import ContainerCompareAnalyses from 'src/components/container/ContainerCompareAnalyses';
 import ContainerRow from 'src/apps/mydb/elements/details/samples/analysesTab/SampleDetailsContainersDnd';
 import {
   HeaderDeleted,
   HeaderNormal,
-  AnalysisModeBtn
+  AnalysisModeBtn,
 } from 'src/apps/mydb/elements/details/samples/analysesTab/SampleDetailsContainersAux';
 
 const RndNotAvailable = () => (
@@ -32,7 +33,10 @@ const RndOrder = ({
 }) => {
   return (
     <div>
-      <p>{AnalysisModeBtn(mode, toggleMode, isDisabled)}{addButton()}</p>
+      <p>
+        {AnalysisModeBtn(mode, toggleMode, isDisabled)}
+        {addButton()}
+      </p>
       {
         orderContainers.map((container, i) => {
           const id = container.id || `fake_${i}`;
@@ -65,7 +69,7 @@ const panelOnSelect = () => {};
 const RndEdit = ({
   sample, mode, handleRemove, handleSubmit, handleAccordionOpen,
   toggleAddToReport, toggleMode, activeAnalysis, orderContainers, readOnly,
-  isDisabled, addButton, handleChange, handleUndo,
+  isDisabled, addButton, handleChange, handleUndo
 }) => {
 
   const headerDeletedFunc = container => (
@@ -94,7 +98,9 @@ const RndEdit = ({
 
   return (
     <div>
-      <p>{AnalysisModeBtn(mode, toggleMode, isDisabled)}{addButton()}</p>
+      <p>
+        {AnalysisModeBtn(mode, toggleMode, isDisabled)}
+        {addButton()}</p>
       <PanelGroup
         id="editable-analysis-list"
         defaultActiveKey={0}
@@ -117,18 +123,33 @@ const RndEdit = ({
 
           return (
             <Panel
+              bsStyle={container.extended_metadata.is_comparison ? "success" : ""}
               eventKey={id}
               key={`${id}CRowEdit`}
             >
               <Panel.Heading>{headerNormalFunc(container, id)}</Panel.Heading>
               <Panel.Body collapsible>
-                <ContainerComponent
-                  templateType="sample"
-                  readOnly={readOnly}
-                  container={container}
-                  disabled={isDisabled}
-                  onChange={handleChange}
-                />
+                {
+                  container.extended_metadata.is_comparison ? (
+                    <ContainerCompareAnalyses 
+                      templateType="sample"
+                      readOnly={readOnly}
+                      sample={sample}
+                      container={container}
+                      disabled={isDisabled}
+                      onChange={handleChange} />
+                  ) :
+                  (
+                    <ContainerComponent
+                      templateType="sample"
+                      readOnly={readOnly}
+                      container={container}
+                      disabled={isDisabled}
+                      onChange={handleChange}
+                    />
+                  )
+                }
+               
               </Panel.Body>
             </Panel>
           );

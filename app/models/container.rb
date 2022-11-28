@@ -25,10 +25,12 @@ class Container < ApplicationRecord
 
   belongs_to :containable, polymorphic: true, optional: true
   has_many :attachments, as: :attachable
+
   # TODO: dependent destroy for attachments should be implemented when attachment get paranoidized instead of this DJ
   before_destroy :delete_attachment
   before_destroy :destroy_datasetable
-  has_closure_tree
+
+  has_closure_tree order: 'name'
 
   scope :analyses_for_root, ->(root_id) {
     where(container_type: 'analysis').joins(

@@ -29,6 +29,7 @@ import HeaderCommentSection from 'src/components/comments/HeaderCommentSection';
 import CommentSection from 'src/components/comments/CommentSection';
 import CommentActions from 'src/stores/alt/actions/CommentActions';
 import CommentModal from 'src/components/common/CommentModal';
+import OpenCalendarButton from 'src/components/calendar/OpenCalendarButton';
 
 export default class ScreenDetails extends Component {
   constructor(props) {
@@ -217,6 +218,9 @@ export default class ScreenDetails extends Component {
             <i className="fa fa-expand" />
           </Button>
         </OverlayTrigger>
+        {screen.isNew
+          ? null
+          : <OpenCalendarButton isPanelHeader eventableId={screen.id} eventableType="Screen" />}
         <PrintCodeButton element={screen} />
         <HeaderCommentSection element={screen} />
       </div>

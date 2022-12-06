@@ -37,6 +37,7 @@ import HeaderCommentSection from 'src/components/comments/HeaderCommentSection';
 import CommentSection from 'src/components/comments/CommentSection';
 import CommentActions from 'src/stores/alt/actions/CommentActions';
 import CommentModal from 'src/components/common/CommentModal';
+import OpenCalendarButton from 'src/components/calendar/OpenCalendarButton';
 
 export default class ReactionDetails extends Component {
   constructor(props) {
@@ -338,6 +339,9 @@ export default class ReactionDetails extends Component {
           {colLabel}
           <ElementAnalysesLabels element={reaction} key={reaction.id + "_analyses"} />
         </div>
+        {reaction.isNew
+          ? null
+          : <OpenCalendarButton isPanelHeader eventableId={reaction.id} eventableType="Reaction" />}
         <PrintCodeButton element={reaction} />
         <HeaderCommentSection element={reaction} />
       </div>

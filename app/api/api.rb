@@ -182,6 +182,7 @@ class API < Grape::API
   mount Chemotion::SampleTaskAPI
   mount Chemotion::ChemicalAPI
   mount Chemotion::CommentAPI
+  mount Chemotion::CalendarEntryAPI
 
   add_swagger_documentation(info: {
     "title": "Chemotion ELN",

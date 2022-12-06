@@ -29,6 +29,7 @@ import HeaderCommentSection from 'src/components/comments/HeaderCommentSection';
 import CommentSection from 'src/components/comments/CommentSection';
 import CommentActions from 'src/stores/alt/actions/CommentActions';
 import CommentModal from 'src/components/common/CommentModal';
+import OpenCalendarButton from 'src/components/calendar/OpenCalendarButton';
 
 export default class ResearchPlanDetails extends Component {
   constructor(props) {
@@ -480,6 +481,14 @@ export default class ResearchPlanDetails extends Component {
           </Button>
         </OverlayTrigger>
         <HeaderCommentSection element={researchPlan} />
+        <OpenCalendarButton
+          isPanelHeader={true}
+          eventable_id={researchPlan.id}
+          eventable_type={"ResearchPlan"}
+        />
+        {researchPlan.isNew
+          ? null
+          : <OpenCalendarButton isPanelHeader eventableId={researchPlan.id} eventableType="ResearchPlan" />}
       </Panel.Heading>
     );
   }

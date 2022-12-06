@@ -37,6 +37,7 @@ class Channel < ApplicationRecord
   DOWNLOAD_ANALYSES_ZIP_FAIL = 'Download Analyses Failure'
   COMMENT_ON_MY_COLLECTION = 'New comment on synchronized collection'
   COMMENT_RESOLVED = 'Comment resolved in synchronized collection'
+  CALENDAR_ENTRY = 'Calender Entry Notification'
 
   class << self
     def build_message(**args)

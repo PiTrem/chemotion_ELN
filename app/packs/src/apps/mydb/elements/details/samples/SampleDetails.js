@@ -71,6 +71,7 @@ import HeaderCommentSection from 'src/components/comments/HeaderCommentSection';
 import CommentSection from 'src/components/comments/CommentSection';
 import CommentActions from 'src/stores/alt/actions/CommentActions';
 import CommentModal from 'src/components/common/CommentModal';
+import OpenCalendarButton from 'src/components/calendar/OpenCalendarButton';
 
 const MWPrecision = 6;
 
@@ -549,6 +550,56 @@ export default class SampleDetails extends React.Component {
         {colLabel}
         <ElementReactionLabels element={sample} key={`${sample.id}_reactions`} />
         <PubchemLabels element={sample} />
+        <ConfirmClose el={sample} />
+        <OverlayTrigger
+          placement="bottom"
+          overlay={<Tooltip id="saveCloseSample">Save and Close Sample</Tooltip>}
+        >
+          <Button
+            bsStyle="warning"
+            bsSize="xsmall"
+            className="button-right"
+            onClick={() => this.handleSubmit(true)}
+            style={{ display: saveBtnDisplay }}
+            disabled={!this.sampleIsValid() || !sample.can_update}
+          >
+            <i className="fa fa-floppy-o" />
+            <i className="fa fa-times" />
+          </Button>
+        </OverlayTrigger>
+        <OverlayTrigger
+          placement="bottom"
+          overlay={<Tooltip id="saveSample">Save Sample</Tooltip>}
+        >
+          <Button
+            bsStyle="warning"
+            bsSize="xsmall"
+            className="button-right"
+            onClick={() => this.handleSubmit()}
+            style={{ display: saveBtnDisplay }}
+            disabled={!this.sampleIsValid() || !sample.can_update}
+          >
+            <i className="fa fa-floppy-o" />
+          </Button>
+        </OverlayTrigger>
+        {copyBtn}
+        <OverlayTrigger
+          placement="bottom"
+          overlay={<Tooltip id="fullSample">FullScreen</Tooltip>}
+        >
+          <Button
+            bsStyle="info"
+            bsSize="xsmall"
+            className="button-right"
+            onClick={() => this.props.toggleFullScreen()}
+          >
+            <i className="fa fa-expand" />
+          </Button>
+        </OverlayTrigger>
+        {sample.isNew
+          ? null
+          : <OpenCalendarButton isPanelHeader eventableId={sample.id} eventableType="Sample" />}
+        <PrintCodeButton element={sample} />
         {sample.isNew
           ? <FastInput fnHandle={this.handleFastInput} />
           : null}

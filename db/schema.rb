@@ -774,8 +774,10 @@ ActiveRecord::Schema.define(version: 2023_03_06_114227) do
     t.string "rxno"
     t.string "conditions"
     t.index ["deleted_at"], name: "index_reactions_on_deleted_at"
+    t.index ["rinchi_short_key"], name: "index_reactions_on_rinchi_short_key", order: :desc
     t.index ["rinchi_web_key"], name: "index_reactions_on_rinchi_web_key"
     t.index ["role"], name: "index_reactions_on_role"
+    t.index ["rxno"], name: "index_reactions_on_rxno", order: :desc
   end
 
   create_table "reactions_samples", id: :serial, force: :cascade do |t|
@@ -894,8 +896,8 @@ ActiveRecord::Schema.define(version: 2023_03_06_114227) do
   end
 
   create_table "research_plans_screens", force: :cascade do |t|
-    t.integer "screen_id"
-    t.integer "research_plan_id"
+    t.bigint "screen_id", null: false
+    t.bigint "research_plan_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
@@ -904,8 +906,8 @@ ActiveRecord::Schema.define(version: 2023_03_06_114227) do
   end
 
   create_table "research_plans_wellplates", force: :cascade do |t|
-    t.integer "research_plan_id"
-    t.integer "wellplate_id"
+    t.bigint "research_plan_id", null: false
+    t.bigint "wellplate_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
@@ -1444,8 +1446,8 @@ ActiveRecord::Schema.define(version: 2023_03_06_114227) do
        RETURNS TABLE(literatures text)
        LANGUAGE sql
       AS $function$
-         select string_agg(l2.id::text, ',') as literatures from literals l , literatures l2 
-         where l.literature_id = l2.id 
+         select string_agg(l2.id::text, ',') as literatures from literals l , literatures l2
+         where l.literature_id = l2.id
          and l.element_type = $1 and l.element_id = $2
        $function$
   SQL

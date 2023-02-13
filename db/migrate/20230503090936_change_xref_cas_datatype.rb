@@ -8,14 +8,12 @@ class ChangeXrefCasDatatype < ActiveRecord::Migration[6.1]
       sample.update_columns(xref: {})
     end
 
-    Sample.where("xref ? 'cas'").find_each do |sample|
-      xref = sample.xref
-      cas = xref.delete('cas')
-      next if cas.present? && cas.is_a?(String)
-
-      xref['cas'] = cas['value'] if cas.is_a?(Hash) && cas['value'].present?
-
-      sample.update_columns(xref: xref)
+    Sample.where("xref ? 'cas'").find_each do |s|
+      if s.xref['cas'].nil?
+        s.update_columns(xref: s.xref.compact!)
+      elsif s.xref['cas'].is_a?(Hash) && s.xref['cas'].key?('value')
+        s.update_columns(xref: { cas: (s.xref['cas']['value']).to_s })
+      end
     end
   end
 end

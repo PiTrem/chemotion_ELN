@@ -773,6 +773,7 @@ ActiveRecord::Schema.define(version: 2023_05_03_090936) do
     t.string "duration"
     t.string "rxno"
     t.string "conditions"
+    t.jsonb "variations", default: []
     t.index ["deleted_at"], name: "index_reactions_on_deleted_at"
     t.index ["rinchi_web_key"], name: "index_reactions_on_rinchi_web_key"
     t.index ["role"], name: "index_reactions_on_role"

@@ -310,6 +310,21 @@ export default class ElementsTableEntries extends Component {
     }
   }
 
+  reactionVariations(element) {
+    if (element.type !== 'reaction') {
+      return undefined;
+    }
+    if (element.variations && element.variations.length) {
+      return (
+        <div>
+          {element.variations.length}
+          {' '}
+          variations
+        </div>
+      );
+    }
+  }
+
   sampleAnalysesLabels(element) {
     if (element.type == 'sample') {
       return (
@@ -365,8 +380,8 @@ export default class ElementsTableEntries extends Component {
                       />
                     }
                     {this.reactionStatus(element)}
-                    {' '}
                     {this.reactionRole(element)}
+                    {this.reactionVariations(element)}
                     <br />
                     {sampleMoleculeName}
                     <ElementCollectionLabels element={element} key={element.id} />

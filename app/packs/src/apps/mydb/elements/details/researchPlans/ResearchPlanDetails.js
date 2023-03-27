@@ -26,7 +26,7 @@ import ElementDetailSortTab from 'src/apps/mydb/elements/details/ElementDetailSo
 import { addSegmentTabs } from 'src/components/generic/SegmentDetails';
 import PrivateNoteElement from 'src/apps/mydb/elements/details/PrivateNoteElement';
 import HeaderCommentSection from 'src/components/comments/HeaderCommentSection';
-import CommentSection from ".src/components/comments/CommentSection";
+import CommentSection from "src/components/comments/CommentSection";
 
 export default class ResearchPlanDetails extends Component {
   constructor(props) {

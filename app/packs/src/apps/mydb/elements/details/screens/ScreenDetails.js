@@ -26,7 +26,9 @@ import UIActions from 'src/stores/alt/actions/UIActions';
 import UIStore from 'src/stores/alt/stores/UIStore';
 import { addSegmentTabs } from 'src/components/generic/SegmentDetails';
 import HeaderCommentSection from 'src/components/comments/HeaderCommentSection';
-import CommentSection from "src/components/comments/CommentSection";
+import CommentSection from 'src/components/comments/CommentSection';
+import CommentActions from 'src/stores/alt/actions/CommentActions';
+import CommentModal from 'src/components/common/CommentModal';
 
 export default class ScreenDetails extends Component {
   constructor(props) {
@@ -42,13 +44,12 @@ export default class ScreenDetails extends Component {
     this.onTabPositionChanged = this.onTabPositionChanged.bind(this);
     this.handleSegmentsChange = this.handleSegmentsChange.bind(this);
     this.updateComponentGraphData = this.updateComponentGraphData.bind(this);
-    this.renderCommentModal = this.renderCommentModal.bind(this);
   }
 
   componentDidMount() {
     const { screen } = this.props;
     UIStore.listen(this.onUIStoreChange);
-    this.props.fetchComments(screen);
+    CommentActions.fetchComments(screen);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -217,15 +218,7 @@ export default class ScreenDetails extends Component {
           </Button>
         </OverlayTrigger>
         <PrintCodeButton element={screen} />
-        <HeaderCommentSection
-          element={screen}
-          comments={comments}
-          showCommentSection={showCommentSection}
-          setCommentSection={this.props.setCommentSection}
-          getSectionComments={this.props.getSectionComments}
-          toggleCommentModal={this.props.toggleCommentModal}
-          toggleCommentSection={this.props.toggleCommentSection}
-        />
+        <HeaderCommentSection element={screen} />
       </div>
     );
   }
@@ -365,14 +358,7 @@ export default class ScreenDetails extends Component {
       properties: (
         <Tab eventKey="properties" title="Properties" key={`properties_${screen.id}`}>
           {
-            this.props.showCommentSection && !screen.isNew &&
-            <CommentSection
-              section="screen_properties"
-              comments={this.props.comments}
-              setCommentSection={this.props.setCommentSection}
-              toggleCommentModal={this.props.toggleCommentModal}
-              getSectionComments={this.props.getSectionComments}
-            />
+            !screen.isNew && <CommentSection section="screen_properties" />
           }
           {this.propertiesFields(screen)}
         </Tab>
@@ -380,14 +366,7 @@ export default class ScreenDetails extends Component {
       analyses: (
         <Tab eventKey="analyses" title="Analyses" key={`analyses_${screen.id}`}>
           {
-            this.props.showCommentSection && !screen.isNew &&
-            <CommentSection
-              section="screen_analyses"
-              comments={this.props.comments}
-              setCommentSection={this.props.setCommentSection}
-              toggleCommentModal={this.props.toggleCommentModal}
-              getSectionComments={this.props.getSectionComments}
-            />
+            !screen.isNew && <CommentSection section="screen_analyses" />
           }
           <ScreenDetailsContainers
             screen={screen}
@@ -464,7 +443,7 @@ export default class ScreenDetails extends Component {
             <Button bsStyle="primary" onClick={() => DetailActions.close(screen)}>Close</Button>
             <Button bsStyle="warning" onClick={() => this.handleSubmit()}>{submitLabel}</Button>
           </ButtonToolbar>
-          {this.props.renderCommentModal(screen)}
+          <CommentModal element={screen} />
         </Panel.Body>
       </Panel>
     );
@@ -474,14 +453,4 @@ export default class ScreenDetails extends Component {
 ScreenDetails.propTypes = {
   screen: PropTypes.instanceOf(Screen).isRequired,
   toggleFullScreen: PropTypes.func.isRequired,
-  comments: PropTypes.array.isRequired,
-  section: PropTypes.string.isRequired,
-  showCommentSection: PropTypes.bool.isRequired,
-  showCommentModal: PropTypes.bool.isRequired,
-  fetchComments: PropTypes.func.isRequired,
-  renderCommentModal: PropTypes.func.isRequired,
-  getSectionComments: PropTypes.func.isRequired,
-  setCommentSection: PropTypes.func.isRequired,
-  toggleCommentModal: PropTypes.func.isRequired,
-  toggleCommentSection: PropTypes.func.isRequired,
 };

@@ -68,6 +68,8 @@ import MeasurementsTab from 'src/apps/mydb/elements/details/samples/measurements
 import { validateCas } from 'src/utilities/CasValidation';
 import HeaderCommentSection from 'src/components/comments/HeaderCommentSection';
 import CommentSection from 'src/components/comments/CommentSection';
+import CommentActions from 'src/stores/alt/actions/CommentActions';
+import CommentModal from 'src/components/common/CommentModal';
 
 const MWPrecision = 6;
 
@@ -151,7 +153,7 @@ export default class SampleDetails extends React.Component {
     UIStore.listen(this.onUIStoreChange);
     const { activeTab } = this.state;
     this.fetchQcWhenNeeded(activeTab);
-    this.props.fetchComments(sample);
+    CommentActions.fetchComments(sample);
   }
 
   // eslint-disable-next-line camelcase
@@ -495,7 +497,6 @@ export default class SampleDetails extends React.Component {
   }
 
   sampleHeader(sample) {
-    const { showCommentSection, comments } = this.props;
     const saveBtnDisplay = sample.isEdited ? '' : 'none';
     const titleTooltip = `Created at: ${sample.created_at} \n Updated at: ${sample.updated_at}`;
 
@@ -583,15 +584,7 @@ export default class SampleDetails extends React.Component {
           <PubchemLabels element={sample} />
         </div>
         <ShowUserLabels element={sample} />
-        <HeaderCommentSection
-          element={sample}
-          comments={comments}
-          showCommentSection={showCommentSection}
-          setCommentSection={this.props.setCommentSection}
-          getSectionComments={this.props.getSectionComments}
-          toggleCommentModal={this.props.toggleCommentModal}
-          toggleCommentSection={this.props.toggleCommentSection}
-        />
+        <HeaderCommentSection element={sample} />
       </div>
     );
   }
@@ -1016,14 +1009,7 @@ export default class SampleDetails extends React.Component {
     return (
       <Tab eventKey={ind} title="Properties" key={'Props' + sample.id.toString()}>
         {
-          this.props.showCommentSection && !sample.isNew &&
-          <CommentSection
-            section="sample_properties"
-            comments={this.props.comments}
-            setCommentSection={this.props.setCommentSection}
-            toggleCommentModal={this.props.toggleCommentModal}
-            getSectionComments={this.props.getSectionComments}
-          />
+          !sample.isNew && <CommentSection section="sample_properties" />
         }
         <ListGroupItem>
           <SampleForm
@@ -1046,14 +1032,7 @@ export default class SampleDetails extends React.Component {
     return (
       <Tab eventKey={ind} title="Analyses" key={`Container${sample.id.toString()}`}>
         {
-          this.props.showCommentSection && !sample.isNew &&
-          <CommentSection
-            section="sample_analyses"
-            comments={this.props.comments}
-            setCommentSection={this.props.setCommentSection}
-            toggleCommentModal={this.props.toggleCommentModal}
-            getSectionComments={this.props.getSectionComments}
-          />
+          !sample.isNew && <CommentSection section="sample_analyses" />
         }
         <ListGroupItem style={{ paddingBottom: 20 }}>
           <SampleDetailsContainers
@@ -1078,14 +1057,7 @@ export default class SampleDetails extends React.Component {
         key={`References_${sample.id}`}
       >
         {
-          this.props.showCommentSection && !sample.isNew &&
-          <CommentSection
-            section="sample_references"
-            comments={this.props.comments}
-            setCommentSection={this.props.setCommentSection}
-            toggleCommentModal={this.props.toggleCommentModal}
-            getSectionComments={this.props.getSectionComments}
-          />
+          !sample.isNew && <CommentSection section="sample_references" />
         }
         <ListGroupItem style={{ paddingBottom: 20 }} >
           <SampleDetailsLiteratures
@@ -1105,14 +1077,7 @@ export default class SampleDetails extends React.Component {
         key={`Results${sample.id.toString()}`}
       >
         {
-          this.props.showCommentSection && !sample.isNew &&
-          <CommentSection
-            section="sample_results"
-            comments={this.props.comments}
-            setCommentSection={this.props.setCommentSection}
-            toggleCommentModal={this.props.toggleCommentModal}
-            getSectionComments={this.props.getSectionComments}
-          />
+          !sample.isNew && <CommentSection section="sample_results" />
         }
         <ListGroupItem style={{ paddingBottom: 20 }}>
           <FormGroup controlId="importedReadoutInput">
@@ -1195,14 +1160,7 @@ export default class SampleDetails extends React.Component {
         key={`QC_${sample.id}_${ind}`}
       >
         {
-          this.props.showCommentSection && !sample.isNew &&
-          <CommentSection
-            section="sample_qc_curation"
-            comments={this.props.comments}
-            setCommentSection={this.props.setCommentSection}
-            toggleCommentModal={this.props.toggleCommentModal}
-            getSectionComments={this.props.getSectionComments}
-          />
+          !sample.isNew && <CommentSection section="sample_qc_curation" />
         }
         <ListGroupItem style={{ paddingBottom: 20 }} >
           <QcMain
@@ -1452,7 +1410,7 @@ export default class SampleDetails extends React.Component {
           {this.sampleFooter()}
           {this.structureEditorModal(sample)}
           {this.renderMolfileModal()}
-          {this.props.renderCommentModal(sample)}
+          <CommentModal element={sample} />
         </Panel.Body>
       </Panel>
     );
@@ -1462,14 +1420,4 @@ export default class SampleDetails extends React.Component {
 SampleDetails.propTypes = {
   sample: PropTypes.object,
   toggleFullScreen: PropTypes.func,
-  comments: PropTypes.array.isRequired,
-  section: PropTypes.string.isRequired,
-  showCommentSection: PropTypes.bool.isRequired,
-  showCommentModal: PropTypes.bool.isRequired,
-  fetchComments: PropTypes.func.isRequired,
-  renderCommentModal: PropTypes.func.isRequired,
-  getSectionComments: PropTypes.func.isRequired,
-  setCommentSection: PropTypes.func.isRequired,
-  toggleCommentModal: PropTypes.func.isRequired,
-  toggleCommentSection: PropTypes.func.isRequired,
 };

@@ -11,6 +11,7 @@ import UserStore from 'src/stores/alt/stores/UserStore';
 import UserActions from 'src/stores/alt/actions/UserActions';
 import TabLayoutContainer from 'src/apps/mydb/elements/tabLayout/TabLayoutContainer';
 import UIStore from 'src/stores/alt/stores/UIStore';
+import CollectionActions from '../../../../stores/alt/actions/CollectionActions';
 
 const getNodeText = (node) => {
   if (['string', 'number'].includes(typeof node)) return node;
@@ -125,7 +126,12 @@ export default class ElementDetailSortTab extends Component {
   }
 
   updateLayout() {
-    const layout = filterTabLayout(this.layout.state);
+    const layout = filterTabLayout(this.tabLayoutContainerElement.state);
+    const currentCollection = UIStore.getState().currentCollection;
+    let tabSegment = currentCollection.tabs_segment;
+    _.set(tabSegment, `${this.type}`, layout);
+    tabSegment = { ...tabSegment, [`${this.type}`]: layout };
+    CollectionActions.updateTabsSegment({ segment: tabSegment, cId: currentCollection.id });
 
     const userProfile = UserStore.getState().profile;
     const layoutName = `data.layout_detail_${this.type}`;
@@ -156,7 +162,7 @@ export default class ElementDetailSortTab extends Component {
       <Popover
         className="collection-overlay"
         id="popover-layout"
-        style={{ maxWidth: 'none', width: `${wd}px` }}
+        style={{ maxWidth: 'none', width: `${wd}px`, position: 'sticky' }}
       >
         <div>
           <h3 className="popover-title">Tab Layout</h3>
@@ -167,7 +173,7 @@ export default class ElementDetailSortTab extends Component {
       </Popover>
     );
     return (
-      <div style={{position: 'relative'}}>
+      <div style={{ overflowY: 'scroll' }}>
         <Button
           bsStyle={buttonInfo}
           bsSize="xsmall"
@@ -179,6 +185,7 @@ export default class ElementDetailSortTab extends Component {
           <i className="fa fa-sliders" aria-hidden="true" />
         </Button>
         <Overlay
+          style={{ overflowY: 'scroll'}}
           container={this}
           onHide={this.onCloseTabLayoutContainer}
           placement="bottom"

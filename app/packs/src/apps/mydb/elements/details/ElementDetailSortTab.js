@@ -173,7 +173,7 @@ export default class ElementDetailSortTab extends Component {
       </Popover>
     );
     return (
-      <div style={{ overflowY: 'scroll' }}>
+      <div>
         <Button
           bsStyle={buttonInfo}
           bsSize="xsmall"

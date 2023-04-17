@@ -15,6 +15,8 @@ import ElementAllCheckbox from 'src/apps/mydb/elements/list/ElementAllCheckbox';
 import ElementsTableEntries from 'src/apps/mydb/elements/list/ElementsTableEntries';
 import ElementsTableSampleEntries from 'src/apps/mydb/elements/list/ElementsTableSampleEntries';
 import Switch from 'src/apps/mydb/elements/list/Switch';
+import VesselGroup from 'src/models/VesselGroup';
+import VesselContainer from 'src/apps/mydb/elements/list/vessels/VesselContainer'
 
 export default class ElementsTable extends React.Component {
   constructor(props) {
@@ -364,6 +366,12 @@ export default class ElementsTable extends React.Component {
           elements={elements} currentElement={currentElement}
           showDragColumn={!overview} ui={ui} moleculeSort={moleculeSort}
           onChangeCollapse={(checked) => this.collapseSample(!checked)}
+        />
+      )
+    } else if (type === 'vessel') {
+      elementsTableEntries = (
+        <VesselContainer
+          vesselGroups={VesselGroup.buildFromElements(elements)}
         />
       )
     } else {

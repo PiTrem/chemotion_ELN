@@ -13,7 +13,7 @@ module Chemotion
     helpers ProfileHelpers
     helpers UserLabelHelpers
 
-    resource :samples do # rubocop:disable Metrics/BlockLength
+    resource :samples do
 
       # TODO Refactoring: Use Grape Entities
       namespace :ui_state do
@@ -281,7 +281,7 @@ module Chemotion
       end
 
       desc "Update sample by id"
-      params do # rubocop:disable Metrics/BlockLength
+      params do
         requires :id, type: Integer, desc: "Sample id"
         optional :name, type: String, desc: "Sample name"
         optional :external_label, type: String, desc: "Sample external label"
@@ -326,13 +326,13 @@ module Chemotion
         #use :root_container_params
       end
 
-      route_param :id do # rubocop:disable Metrics/BlockLength
+      route_param :id do
         before do
           @sample = Sample.find(params[:id])
           @element_policy = ElementPolicy.new(current_user, @sample)
           error!('401 Unauthorized', 401) unless @element_policy.update?
         end
-        put do # rubocop:disable Metrics/BlockLength
+        put do
           attributes = declared(params, include_missing: false)
           # attributes[:solvent] = params[:solvent].to_json
           attributes[:solvent] = params[:solvent]
@@ -438,7 +438,7 @@ module Chemotion
         optional :molecular_mass, type: Float
         optional :sum_formula, type: String
       end
-      post do # rubocop:disable Metrics/BlockLength
+      post do
         molecule_id = params[:decoupled] && params[:molfile].blank? ? Molecule.find_or_create_dummy&.id : params[:molecule_id]
         attributes = {
           name: params[:name],

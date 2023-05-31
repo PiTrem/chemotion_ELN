@@ -66,7 +66,6 @@ export default class ReactionDetails extends Component {
     }
   }
 
-
   componentDidMount() {
     const { reaction } = this.props;
     UIStore.listen(this.onUIStoreChange);
@@ -236,7 +235,6 @@ export default class ReactionDetails extends Component {
     );
   }
 
-
   reactionSVG(reaction) {
     if (!reaction.svgPath) {
       return false;
@@ -254,7 +252,7 @@ export default class ReactionDetails extends Component {
   }
 
   reactionHeader(reaction) {
-    let hasChanged = reaction.changed ? '' : 'none';
+    const hasChanged = reaction.changed ? '' : 'none';
     const titleTooltip = `Created at: ${reaction.created_at} \n Updated at: ${reaction.updated_at}`;
 
     const { currentCollection } = UIStore.getState();
@@ -272,8 +270,6 @@ export default class ReactionDetails extends Component {
     const colLabel = reaction.isNew ? null : (
       <ElementCollectionLabels element={reaction} key={reaction.id} placement="right" />
     );
-
-
 
     return (
       <div>

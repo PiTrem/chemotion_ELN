@@ -12,6 +12,7 @@ import UserActions from 'src/stores/alt/actions/UserActions';
 import TabLayoutContainer from 'src/apps/mydb/elements/tabLayout/TabLayoutContainer';
 import UIStore from 'src/stores/alt/stores/UIStore';
 import CollectionActions from '../../../../stores/alt/actions/CollectionActions';
+import { getElementSegments } from '../../../../utilities/ElementUtils';
 
 const getNodeText = (node) => {
   if (['string', 'number'].includes(typeof node)) return node;
@@ -112,7 +113,8 @@ export default class ElementDetailSortTab extends Component {
     } else if(state.profile && state.profile.data && state.profile.data[`layout_detail_${this.type}`]){
       layout = state.profile.data[`layout_detail_${this.type}`]
     }
-    const { visible, hidden } = getArrayFromLayout(layout, this.props.availableTabs);
+    let availableTabs = getElementSegments(this.type, this.props.availableTabs);
+    const { visible, hidden } = getArrayFromLayout(layout, availableTabs);
 
     this.setState(
       { visible, hidden },

@@ -1,10 +1,10 @@
-import React from "react";
-import { Button, Modal, Well } from "react-bootstrap";
+import React from 'react';
+import { Button, Modal, Well } from 'react-bootstrap';
 import SpectraActions from 'src/stores/alt/actions/SpectraActions';
 import SpectraStore from 'src/stores/alt/stores/SpectraStore';
 import { SpectraEditor, FN } from '@complat/react-spectra-editor';
-import { TreeSelect } from "antd";
-import { BuildSpectraComparedSelection, GetSelectedComparedAnalyses, BuildSpectraComparedInfos } from "src/utilities/SpectraHelper";
+import { TreeSelect } from 'antd';
+import { BuildSpectraComparedSelection, GetSelectedComparedAnalyses, BuildSpectraComparedInfos } from 'src/utilities/SpectraHelper';
 import PropTypes from 'prop-types';
 
 const rmRefreshed = (analysis) => {
@@ -14,7 +14,6 @@ const rmRefreshed = (analysis) => {
 };
 
 class ViewSpectraCompare extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -61,12 +60,15 @@ class ViewSpectraCompare extends React.Component {
 
   saveOp(params) {
     const { spectraCompare } = this.state;
-    const { peaks, shift, scan, thres, analysis, keepPred, integration, multiplicity, waveLength, cyclicvoltaSt, curveSt } = params;
+    const {
+      peaks, shift, scan, thres, analysis, keepPred,
+      integration, multiplicity, waveLength, cyclicvoltaSt, curveSt
+    } = params;
 
     const { curveIdx } = curveSt;
     const { handleSubmit } = this.props;
 
-    let editedDataSpectra = [];
+    const editedDataSpectra = [];
 
     spectraCompare.forEach((si, idx) => {
       const selectedShift = shift.shifts[idx];
@@ -98,7 +100,6 @@ class ViewSpectraCompare extends React.Component {
       };
 
       editedDataSpectra.push(editedData);
-      
     });
 
     SpectraActions.ToggleCompareModal.defer(null);
@@ -128,7 +129,7 @@ class ViewSpectraCompare extends React.Component {
       <h3>Please refresh the page!</h3>
       <br />
       <h5>Click here to close the window...</h5>
-    </Well>
+    </Well>;
 
     return (
       <div className="card-box">
@@ -147,7 +148,7 @@ class ViewSpectraCompare extends React.Component {
       modalTitle = container.name;
       const { analyses_compared } = container.extended_metadata;
       if (analyses_compared) {
-        selectedFiles = analyses_compared.map(analysis => (
+        selectedFiles = analyses_compared.map((analysis) => (
           analysis.file.id
         ));
       }
@@ -158,7 +159,7 @@ class ViewSpectraCompare extends React.Component {
         <span className="txt-spectra-editor-title">
           {modalTitle}
         </span>
-        <div style={{ display: 'inline-flex', margin: '0 0 0 100px' }} >
+        <div style={{ display: 'inline-flex', margin: '0 0 0 100px' }}>
           <TreeSelect
             style={{ width: '100%' }}
             placeholder="Please select"
@@ -192,7 +193,7 @@ class ViewSpectraCompare extends React.Component {
       currEntity = entity;
       return entity;
     });
-    
+
     const operations = this.buildOpsByLayout(currEntity);
     // const descriptions = this.getQDescVal();
     // const forecast = {
@@ -205,37 +206,35 @@ class ViewSpectraCompare extends React.Component {
     return (
       <Modal.Body>
         {
-          (!multiEntities && multiEntities.length === 0 ) ? this.renderEmpty() :
-          (
-            <SpectraEditor
-              entity={currEntity}
-              multiEntities={multiEntities}
-              operations={operations}
-            />
-          )
+          (!multiEntities && multiEntities.length === 0) ? this.renderEmpty()
+            : (
+              <SpectraEditor
+                entity={currEntity}
+                multiEntities={multiEntities}
+                operations={operations}
+              />
+            )
         }
-        
+
       </Modal.Body>
     );
   }
-  
-  render() {
-    
-    const { showCompareModal, spectraCompare } = this.state;
 
-    // this.getContent();
+  render() {
+    const { showCompareModal, spectraCompare } = this.state;
 
     return (
       <div className="spectra-editor">
         <Modal
           show={showCompareModal}
-          dialogClassName={'spectra-editor-dialog'}
+          dialogClassName="spectra-editor-dialog"
         >
           {
             this.renderTitle()
           }
           {
-            (spectraCompare && spectraCompare.length > 0) ? this.renderSpectraEditor(spectraCompare) : this.renderEmpty()
+            (spectraCompare && spectraCompare.length > 0) ? this.renderSpectraEditor(spectraCompare)
+              : this.renderEmpty()
           }
         </Modal>
       </div>

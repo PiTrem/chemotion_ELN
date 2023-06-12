@@ -75,7 +75,7 @@ class ViewSpectraCompare extends React.Component {
       const selectedIntegration = integration.integrations[idx];
       const selectedMultiplicity = multiplicity.multiplicities[idx];
 
-      const fPeaks = FN.rmRef(peaks, selectedShift);
+      const fPeaks = FN.rmRef(peaks, shift);
       const peaksStr = FN.toPeakStr(fPeaks);
       const predict = JSON.stringify(rmRefreshed(analysis));
       const waveLengthStr = JSON.stringify(waveLength);

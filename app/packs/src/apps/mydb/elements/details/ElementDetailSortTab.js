@@ -106,7 +106,7 @@ export default class ElementDetailSortTab extends Component {
 
   onChangeUser(state) {
     const currentCollection = UIStore.getState().currentCollection;
-    const tabs = currentCollection.tabs_segment;
+    const tabs = currentCollection?.tabs_segment;
     let layout = {};
     if (tabs && tabs.hasOwnProperty(`${this.type}`) && tabs[`${this.type}`]) {
       layout = tabs[`${this.type}`]
@@ -130,7 +130,7 @@ export default class ElementDetailSortTab extends Component {
   updateLayout() {
     const layout = filterTabLayout(this.tabLayoutContainerElement.state);
     const currentCollection = UIStore.getState().currentCollection;
-    let tabSegment = currentCollection.tabs_segment;
+    let tabSegment = currentCollection?.tabs_segment;
     _.set(tabSegment, `${this.type}`, layout);
     tabSegment = { ...tabSegment, [`${this.type}`]: layout };
     CollectionActions.updateTabsSegment({ segment: tabSegment, cId: currentCollection.id });
@@ -147,7 +147,7 @@ export default class ElementDetailSortTab extends Component {
 
   render() {
     const currentCollection = UIStore.getState().currentCollection;
-    const tabs = currentCollection.tabs_segment;
+    const tabs = currentCollection?.tabs_segment;
     const buttonInfo = isEmpty(tabs) ? 'info' : 'default';
     const tabLayoutContainerElement = (
       <TabLayoutContainer

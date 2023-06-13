@@ -468,6 +468,7 @@ export default class ResearchPlanDetails extends Component {
           </span>
         </OverlayTrigger>
         <ElementCollectionLabels element={researchPlan} placement="right" />
+        <HeaderCommentSection element={researchPlan} />
         <ConfirmClose el={researchPlan} />
         <OverlayTrigger placement="bottom" overlay={<Tooltip id="saveresearch_plan">Save Research Plan</Tooltip>}>
           <Button bsStyle="warning" bsSize="xsmall" className="button-right" onClick={() => this.handleSubmit()} style={{ display: (researchPlan.changed || false) ? '' : 'none' }}>
@@ -479,7 +480,6 @@ export default class ResearchPlanDetails extends Component {
             <i className="fa fa-expand" aria-hidden="true" />
           </Button>
         </OverlayTrigger>
-        <HeaderCommentSection element={researchPlan} />
       </Panel.Heading>
     );
   }
@@ -496,7 +496,7 @@ export default class ResearchPlanDetails extends Component {
       research_plan: (
         <Tab eventKey="research_plan" title="Research plan" key={`rp_${researchPlan.id}`}>
           {
-            !researchPlan.isNew && <CommentSection section="research_plan_research_plan" />
+            !researchPlan.isNew && <CommentSection section="research_plan_research_plan" element={researchPlan} />
           }
           <div style={{ margin: '5px 0px 5px 5px' }}>
             {btnMode}
@@ -508,7 +508,7 @@ export default class ResearchPlanDetails extends Component {
       analyses: (
         <Tab eventKey="analyses" title="Analyses" key={`analyses_${researchPlan.id}`}>
           {
-            !researchPlan.isNew && <CommentSection section="research_plan_analyses" />
+            !researchPlan.isNew && <CommentSection section="research_plan_analyses" element={researchPlan} />
           }
           {this.renderAnalysesTab(researchPlan)}
         </Tab>
@@ -516,7 +516,7 @@ export default class ResearchPlanDetails extends Component {
       attachments: (
         <Tab eventKey="attachments" title="Attachments" key={`attachments_${researchPlan.id}`}>
           {
-            !researchPlan.isNew && <CommentSection section="research_plan_attachments" />
+            !researchPlan.isNew && <CommentSection section="research_plan_attachments" element={researchPlan} />
           }
           {this.renderAttachmentsTab(researchPlan)}
         </Tab>
@@ -524,7 +524,7 @@ export default class ResearchPlanDetails extends Component {
       references: (
         <Tab eventKey="references" title="References" key={`lit_${researchPlan.id}`}>
           {
-            !researchPlan.isNew && <CommentSection section="research_plan_references" />
+            !researchPlan.isNew && <CommentSection section="research_plan_references" element={researchPlan} />
           }
           <ResearchPlansLiteratures element={researchPlan} />
         </Tab>
@@ -543,7 +543,7 @@ export default class ResearchPlanDetails extends Component {
       metadata: (
         <Tab eventKey={4} title="Metadata" disabled={researchPlan.isNew} key={`metadata_${researchPlan.id}`}>
           {
-            !researchPlan.isNew && <CommentSection section="research_plan_metadata" />
+            !researchPlan.isNew && <CommentSection section="research_plan_metadata" element={researchPlan} />
           }
           <ResearchPlanMetadata
             parentResearchPlan={researchPlan}

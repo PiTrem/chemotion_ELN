@@ -189,6 +189,7 @@ export default class ScreenDetails extends Component {
           </span>
         </OverlayTrigger>
         <ElementCollectionLabels element={screen} placement="right" />
+        <HeaderCommentSection element={screen} />
         <ConfirmClose el={screen} />
         <OverlayTrigger
           placement="bottom"
@@ -218,7 +219,6 @@ export default class ScreenDetails extends Component {
           </Button>
         </OverlayTrigger>
         <PrintCodeButton element={screen} />
-        <HeaderCommentSection element={screen} />
       </div>
     );
   }
@@ -358,7 +358,7 @@ export default class ScreenDetails extends Component {
       properties: (
         <Tab eventKey="properties" title="Properties" key={`properties_${screen.id}`}>
           {
-            !screen.isNew && <CommentSection section="screen_properties" />
+            !screen.isNew && <CommentSection section="screen_properties" element={screen} />
           }
           {this.propertiesFields(screen)}
         </Tab>
@@ -366,7 +366,7 @@ export default class ScreenDetails extends Component {
       analyses: (
         <Tab eventKey="analyses" title="Analyses" key={`analyses_${screen.id}`}>
           {
-            !screen.isNew && <CommentSection section="screen_analyses" />
+            !screen.isNew && <CommentSection section="screen_analyses" element={screen} />
           }
           <ScreenDetailsContainers
             screen={screen}

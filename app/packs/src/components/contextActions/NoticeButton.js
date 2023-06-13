@@ -9,6 +9,8 @@ import InboxActions from 'src/stores/alt/actions/InboxActions';
 import ReportActions from 'src/stores/alt/actions/ReportActions';
 import ElementActions from 'src/stores/alt/actions/ElementActions';
 import InboxStore from 'src/stores/alt/stores/InboxStore';
+import CalendarActions from 'src/stores/alt/actions/CalendarActions';
+
 
 const changeUrl = (url, urlTitle) => (url ? <a href={url} target="_blank" rel="noopener noreferrer">{urlTitle || url}</a> : <span />);
 
@@ -74,6 +76,9 @@ const handleNotification = (nots, act, needCallback = true) => {
           break;
         case 'ElementActions.fetchResearchPlanById':
           ElementActions.fetchResearchPlanById(parseInt(n.content.research_plan_id, 10));
+          break;
+        case 'CalendarActions.navigateToElement':
+          CalendarActions.navigateToElement(n.content.eventable_type, n.content.eventable_id);
           break;
         default:
         //
